@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    <title>결제페이지</title>
+
+    <!--    axios-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- iamport.payment.js -->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+
+    <script>
+        const requestPay = () => {
+
+            const IMP = window.IMP; // 생략 가능
+            IMP.init("imp58028867"); // 예: imp00000000a
+
+            IMP.request_pay({
+                pg: "kakaopay",
+                pay_method: "card",
+                // merchant_uid: "ORD20180131-0000011",   // 주문번호
+                name: "노르웨이 회전 의자",
+                amount: 100,                         // 숫자 타입
+                buyer_email: "gildong@gmail.com",
+                buyer_name: "홍길동",
+                buyer_tel: "010-4242-4242",
+                buyer_addr: "서울특별시 강남구 신사동",
+                buyer_postcode: "01181",
+                m_redirect_url: "/"
+            }, function (rsp) { // callback
+                console.log(rsp)
+                //rsp.imp_uid 값으로 결제 단건조회 API를 호출하여 결제결과를 판단합니다.
+                if (rsp.success) {
+                    // 결제 성공시 로직
+                    alert("결제에 성공했습니다!!")
+                    // 백엔드에 데이터 보내주기
+                    axios.post(
+                        "http://localhost:3000/api/order",
+                        {
+                            impUid: rsp.imp_uid,
+                            amount: rsp.paid_amount
+                        },
+                        {
+                            headers: {
+                                Authorization:
+                                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlODgxNjcxYS04YjFmLTQ3M2YtOTE4Mi02OTRjNmMzOTUwN2QiLCJpYXQiOjE2OTc5ODI3NjcsImV4cCI6MTY5ODAxODc2N30.OB8cexfAMcI8eTZ3qZaL4WTULB3Z2pHwoeR9Nv6H9qk"
+                            }
+                        }
+                    ).then(response => {
+                        console.log(response.data);
+                    }).catch(error => {
+                        console.error(error);
+                    });
+
+
+                } else {
+                    // 결제 실패시 로직
+                    alert("결제에 실패했습니다. 다시 시도해 주세요")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<button onclick="requestPay()">결제하기</button>
+</body>
+</html>
