@@ -15,9 +15,8 @@ export class PortoneService {
     try {
       // 토큰 받기
       const result = await axios.post(`https://api.iamport.kr/users/getToken`, {
-        imp_key: '4765773644532810',
-        imp_secret:
-          'tGoSH2pCq2IcDr7Si71T3MJaoARKoYhtbxCHwhYz5Pdb9FcmlfGzJqe6Z0615eahrDfq09hoKWxsqdOL',
+        imp_key: this.cfg.get('IMP_KEY'),
+        imp_secret: this.cfg.get('IMP_SECRET'),
       });
       return result.data.response.access_token;
     } catch (error) {
