@@ -12,6 +12,7 @@ import { RedisModule } from './redis/redis.module';
 import { BrandModule } from './brand/brand.module';
 import { CommentModule } from './comment/comment.module';
 import { OrderModule } from './order/order.module';
+import { PortoneModule } from './portone/portone.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { OrderModule } from './order/order.module';
     BrandModule,
     CommentModule,
     OrderModule,
+    PortoneModule,
   ],
   controllers: [AppController],
   providers: [AppService],
