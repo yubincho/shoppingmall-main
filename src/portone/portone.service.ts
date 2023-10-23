@@ -5,12 +5,16 @@ import {
 } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { IPortOneServiceCheckPaid } from './interfaces/portone.service.interface';
-import * as process from 'process';
+import {
+  IPortoneServiceCancel,
+  IPortOneServiceCheckPaid,
+} from './interfaces/portone.service.interface';
 
 @Injectable()
 export class PortoneService {
   constructor(private readonly cfg: ConfigService) {}
+
+  /** 토큰 받기 */
   async getToken(): Promise<string> {
     try {
       // 토큰 받기
@@ -27,7 +31,10 @@ export class PortoneService {
       );
     }
   }
-  // 단건 조회
+
+  /** 단건 조회
+   * 결제 됐는지 확인
+   * */
   async checkPaid({ impUid, amount }: IPortOneServiceCheckPaid): Promise<void> {
     try {
       const token = await this.getToken();
@@ -43,6 +50,29 @@ export class PortoneService {
       if (amount !== result.data.response.amount) {
         throw new UnprocessableEntityException('잘못된 결제 정보입니다.');
       }
+    } catch (error) {
+      throw new HttpException(
+        // portone에서 만든 메시지 그대로 사용함
+        error.response.data.message,
+        error.response.status,
+      );
+    }
+  }
+
+  /** 결제 취소하기 */
+  async cancel({ impUid }: IPortoneServiceCancel): Promise<number> {
+    try {
+      const token = await this.getToken();
+      const result = await axios.post(
+        'https://api.iamport.kr/payments/cancel',
+        {
+          imp_uid: impUid,
+        },
+        {
+          headers: { Authorization: token },
+        },
+      );
+      return result.data.response.cancel_amount; // 취소된 금액 반환
     } catch (error) {
       throw new HttpException(
         // portone에서 만든 메시지 그대로 사용함

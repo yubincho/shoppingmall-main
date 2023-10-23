@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  /** 결제 생성, 결제하기 */
   @Post('')
   @UseGuards(JwtAuthGuard)
   async createOrderTransaction(
@@ -26,5 +27,16 @@ export class OrderController {
     const { impUid, amount } = requestBody;
     const user = req.user;
     return await this.orderService.create({ impUid, amount, user });
+  }
+
+  /** 결제 취소하기 */
+  @Post('')
+  @UseGuards(JwtAuthGuard)
+  async cancelOrderTransaction(
+    @Param('impUid') impUid: string,
+    @Req() req: RequestWithUserInterface,
+  ) {
+    const user = req.user;
+    return await this.orderService.cancel({ impUid, user });
   }
 }
