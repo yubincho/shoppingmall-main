@@ -26,7 +26,7 @@ export class OrderController {
   ) {
     const { impUid, amount } = requestBody;
     const user = req.user;
-    return await this.orderService.create({ impUid, amount, user });
+    return await this.orderService.createForPayment({ impUid, amount, user });
   }
 
   /** 결제 취소하기 */

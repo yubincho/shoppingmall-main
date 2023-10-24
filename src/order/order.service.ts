@@ -43,23 +43,27 @@ export class OrderService {
     if (result) throw new ConflictException('이미 등록된 결제 아이디입니다.');
   }
 
-  /** 결제 생성, 결제하기 */
-  async create({ impUid, amount, user: _user }: IPointTransactionCreate) {
+  /** 거래기록 생성
+   * status : 디폴트로 PAYMENT로 설정, 다른 상태값 오면 덮어씀
+   * 예 ) cancel 로 넘어오면 status는 cancel 임.
+   * */
+  async create({
+    impUid,
+    amount,
+    user: _user,
+    status = POINT_TRANSACTION_STATUS_ENUM.PAYMENT,
+  }: IPointTransactionCreate) {
+    // user를 _user로 변경하기
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-
     try {
-      // 결제완료 상태인지 검증하기
-      await this.portoneService.checkPaid({ impUid, amount });
-      // 이미 결제됐던 id인지 검증하기
-      await this.checkTransactionDuplication({ impUid });
-      // (위 검증 모두 마친 후 새로운 결제라면) order 테이블에 거래기록 1줄 생성
+      //  order 테이블에 거래기록 1줄 생성
       const pointTransaction = {
         impUid,
         orderAmount: amount,
         user: _user,
-        status: POINT_TRANSACTION_STATUS_ENUM.PAYMENT,
+        status,
       };
       const createTransaction = this.orderRepository.create(pointTransaction);
       await queryRunner.manager.save(createTransaction);
@@ -89,6 +93,17 @@ export class OrderService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  /** 결제 생성, 결제하기 */
+  async createForPayment({ impUid, amount, user }: IPointTransactionCreate) {
+    // 결제완료 상태인지 검증하기
+    await this.portoneService.checkPaid({ impUid, amount });
+    // 이미 결제됐던 id인지 검증하기
+    await this.checkTransactionDuplication({ impUid });
+
+    // (위 2가지 검증 마친 후 ) order 테이블에 거래기록 1줄 생성
+    return this.create({ impUid, amount, user });
   }
 
   /** 결제내역 조회  */
@@ -157,5 +172,12 @@ export class OrderService {
     const canceledAmount = await this.portoneService.cancel({ impUid });
 
     // 취소된 결과 DB에 등록하기
+    // -로 차감, create 함수에서 -로 차감됨
+    return await this.create({
+      impUid,
+      amount: -canceledAmount,
+      user,
+      status: POINT_TRANSACTION_STATUS_ENUM.CANCEL,
+    });
   }
 }
