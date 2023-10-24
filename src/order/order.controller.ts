@@ -30,7 +30,7 @@ export class OrderController {
   }
 
   /** 결제 취소하기 */
-  @Post('')
+  @Post('/cancel/:impUid')
   @UseGuards(JwtAuthGuard)
   async cancelOrderTransaction(
     @Param('impUid') impUid: string,

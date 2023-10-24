@@ -51,6 +51,7 @@ export class PortoneService {
         throw new UnprocessableEntityException('잘못된 결제 정보입니다.');
       }
     } catch (error) {
+      console.log('[error]', error);
       throw new HttpException(
         // portone에서 만든 메시지 그대로 사용함
         error.response.data.message,
@@ -74,6 +75,7 @@ export class PortoneService {
       );
       return result.data.response.cancel_amount; // 취소된 금액 반환
     } catch (error) {
+      console.log('[error.response]', error.response);
       throw new HttpException(
         // portone에서 만든 메시지 그대로 사용함
         error.response.data.message,

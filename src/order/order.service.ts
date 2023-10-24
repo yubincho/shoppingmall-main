@@ -16,6 +16,7 @@ import { IPointCheckTransactionFindByImpUidAndUser } from './interfaces/IPointCh
 import { IPointCheckTransactionCancel } from './interfaces/IPointCheckTransactionCancel';
 import { IPointTransactionCheckAlreadyCanceled } from './interfaces/IPointTransactionCheckAlreadyCanceled';
 import { IPointTransactionCheckHasCancelablePoint } from './interfaces/IPointTransactionCheckHasCancelablePoint';
+import { OrderResponseDto } from './dto/order.response.dto';
 
 @Injectable()
 export class OrderService {
@@ -52,7 +53,7 @@ export class OrderService {
     amount,
     user: _user,
     status = POINT_TRANSACTION_STATUS_ENUM.PAYMENT,
-  }: IPointTransactionCreate) {
+  }: IPointTransactionCreate): Promise<OrderResponseDto> {
     // user를 _user로 변경하기
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -158,7 +159,10 @@ export class OrderService {
   }
 
   /** 결제 취소하기 */
-  async cancel({ impUid, user }: IPointCheckTransactionCancel) {
+  async cancel({
+    impUid,
+    user,
+  }: IPointCheckTransactionCancel): Promise<OrderResponseDto> {
     // 1. 결제내역 조회하기
     const pointTransactions = await this.findByImpUidAndUser({ impUid, user });
 
@@ -170,12 +174,13 @@ export class OrderService {
 
     // 결제 취소하기
     const canceledAmount = await this.portoneService.cancel({ impUid });
-
+    // console.log('[canceledAmount]', canceledAmount);
+    // console.log('-Math.abs(canceledAmount)', -Math.abs(canceledAmount));
     // 취소된 결과 DB에 등록하기
     // -로 차감, create 함수에서 -로 차감됨
     return await this.create({
       impUid,
-      amount: -canceledAmount,
+      amount: -Math.abs(canceledAmount),
       user,
       status: POINT_TRANSACTION_STATUS_ENUM.CANCEL,
     });
