@@ -5,48 +5,37 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { AxiosHeaders } from 'axios';
+import { AxiosError } from 'axios';
 
 @Catch() // HttpException 삭제. axios를 포함한 모든 에러 잡기.
 export class CustomExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    // @ts-ignore
-    const status = exception.getStatus();
-    // default 예외
-    // const error = {
-    //   status: HttpStatus.INTERNAL_SERVER_ERROR,
-    //   message: '예외가 발생했어요.',
-    // };
+    const response = ctx.getResponse();
+    let status =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const err = exception.getResponse() as
-      | string
-      | { error: string; statusCode: 400; message: string[] };
+    let message = '예외가 발생했어요.';
 
-    // Http 예외
+    // http 에러 잡기
     if (exception instanceof HttpException) {
-      // success: false;
-      // error.status = exception.getStatus();
-      // error.message = exception.message;
-      return response.status(status).json({
-        success: false,
-        code: exception.getStatus(),
-        data: exception.message,
-      });
-    } else if (exception instanceof AxiosHeaders) {
-      // Axios 예외
-      // success: false;
-      // error.status = exception.response.status;
-      // error.message = exception.response.data.message;
-      return response.status(status).json({
-        success: false,
-        code: exception.exception.response.status,
-        data: exception.response.data.message,
-      });
+      message = exception.message;
+    } else if (exception instanceof AxiosError) {
+      // Axios 에러 잡기
+      const axiosError = exception as AxiosError;
+      status = axiosError.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // message = axiosError.response?.data?.message || 'Axios 예외가 발생했어요.';
+      message = axiosError.response.data?.message || 'Axios 예외가 발생했어요.';
     }
+
+    response.status(status).json({
+      success: false,
+      code: status,
+      message: message,
+    });
   }
 }
