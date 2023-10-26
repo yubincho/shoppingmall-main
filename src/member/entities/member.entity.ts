@@ -2,6 +2,7 @@ import { CommonEntity } from '../../product/entities/common.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
+// import * as bcrypt from 'bcrypt';
 import * as gravatar from 'gravatar';
 import { ProviderEnum } from './provider.enum';
 import { RoleEnum } from './role.enum';
@@ -64,8 +65,8 @@ export class Member extends CommonEntity {
       const saltValue = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(this.password, saltValue);
       this.password = hashedPassword;
-      // }
 
+      // }
       // password 암호화
       // const saltValue = await bcrypt.genSalt(10);
       // const hashedPassword = await bcrypt.hash(this.password, saltValue);

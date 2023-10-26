@@ -47,15 +47,26 @@ export class PortoneService {
         },
       );
       // 유저의 금액이 맞는지도 확인, 해킹 방지
+      // Axios 예외
       if (amount !== result.data.response.amount) {
         throw new UnprocessableEntityException('잘못된 결제 정보입니다.');
       }
     } catch (error) {
       console.log('[error]', error);
       throw new HttpException(
+        // 전역 filter로 만들기
+        error.response.data?.message || error.response.message,
+        error.response.status || error.response.statusCode,
+
         // portone에서 만든 메시지 그대로 사용함
-        error.response.data.message,
-        error.response.status,
+        // Axios 예외
+        //data: { code: -1, message: '존재하지 않는 결제정보입니다.', response: null }
+        // error.response.data.message,
+        // error.response.status,
+
+        // Http 예외
+        // error.response.message,
+        // error.response.statusCode,
       );
     }
   }

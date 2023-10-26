@@ -48,7 +48,7 @@ export class AuthController {
   async loginUser(@Req() req: RequestWithUserInterface) {
     const user = req.user;
     const token = await this.authService.generateAccessToken(user.id);
-    user.password = undefined;
+    // user.password = undefined;
     return { user, token };
   }
   // async loginUser(@Body() loginMemberDto: LoginMemberDto) {
