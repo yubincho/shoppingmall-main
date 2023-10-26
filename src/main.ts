@@ -4,13 +4,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as path from 'path';
-import { HttpExceptionFilter } from './common/filter/http-exception.filter';
+import { CustomExceptionFilter } from './common/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   await app.setGlobalPrefix('api');
 
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new CustomExceptionFilter());
   app.useStaticAssets(
     process.env.NODE_ENV === 'production'
       ? path.join(__dirname, '..', '..', 'uploads')
