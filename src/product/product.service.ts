@@ -16,6 +16,10 @@ export class ProductService {
     const products = await this.productRepository.find({
       relations: ['brand'],
     });
+    // 모든 제품의 이미지 URL에 '/public/products/' 경로 추가
+    products.forEach((product) => {
+      product.productImage = `/public/products/${product.productImage}`;
+    });
     return products;
   }
 

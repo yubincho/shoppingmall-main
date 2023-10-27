@@ -17,9 +17,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
   imports: [
     TypeOrmModule.forFeature([Product]),
     ServeStaticModule.forRoot({
-      // 402.jpg
-      // http://localhost:3000/public/products/402.jpg
-      // http://localhost:3000/api/product/create/402.jpg
       // http://localhost:3000/public/products/42c60eea-3c75-4043-84f7-79373384c0fe.png
       rootPath: PUBLIC_FOLDER_PATH,
       serveRoot: '/public',
