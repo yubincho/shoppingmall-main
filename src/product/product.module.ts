@@ -6,12 +6,24 @@ import { Product } from './entities/product.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { extname } from 'path';
 import * as multer from 'multer';
-import { PRODUCTS_IMAGE_PATH } from '../common/const/path.const';
+import {
+  PRODUCTS_IMAGE_PATH,
+  PUBLIC_FOLDER_PATH,
+} from '../common/const/path.const';
 import { v4 as uuid } from 'uuid';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Product]),
+    ServeStaticModule.forRoot({
+      // 402.jpg
+      // http://localhost:3000/public/products/402.jpg
+      // http://localhost:3000/api/product/create/402.jpg
+      // http://localhost:3000/public/products/42c60eea-3c75-4043-84f7-79373384c0fe.png
+      rootPath: PUBLIC_FOLDER_PATH,
+      serveRoot: '/public',
+    }),
     MulterModule.register({
       limits: {
         fileSize: 10000000, // 10M까지
