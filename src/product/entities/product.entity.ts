@@ -1,4 +1,4 @@
-import { CommonEntity } from './common.entity';
+import { CommonEntity } from '../../common/common-entities/common.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Brand } from '../../brand/entities/brand.entity';
 import { Comment } from '../../comment/entities/comment.entity';

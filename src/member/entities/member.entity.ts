@@ -1,4 +1,4 @@
-import { CommonEntity } from '../../product/entities/common.entity';
+import { CommonEntity } from '../../common/common-entities/common.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';

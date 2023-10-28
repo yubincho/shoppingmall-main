@@ -1,29 +1,14 @@
 import { BadRequestException, Module } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { ProductController } from './product.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from './entities/product.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { extname } from 'path';
 import * as multer from 'multer';
-import {
-  PRODUCTS_IMAGE_PATH,
-  PUBLIC_FOLDER_PATH,
-} from '../common/const/path.const';
+import { TEMP_FOLDER_PATH } from '../common/const/path.const';
 import { v4 as uuid } from 'uuid';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { AuthModule } from '../auth/auth.module';
-import { MemberModule } from '../member/member.module';
-import { CommonModule } from '../common/common.module';
+import { CommonController } from './common.controller';
+import { CommonService } from './common.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product]),
-    ServeStaticModule.forRoot({
-      // http://localhost:3000/public/products/42c60eea-3c75-4043-84f7-79373384c0fe.png
-      rootPath: PUBLIC_FOLDER_PATH,
-      serveRoot: '/public',
-    }),
     MulterModule.register({
       limits: {
         fileSize: 10000000, // 10M까지
@@ -46,7 +31,7 @@ import { CommonModule } from '../common/common.module';
       },
       storage: multer.diskStorage({
         destination: function (req, res, cb) {
-          cb(null, PRODUCTS_IMAGE_PATH);
+          cb(null, TEMP_FOLDER_PATH);
         },
         filename: function (req, file, cb) {
           // 121121-123-1213123-1213.jpg
@@ -54,11 +39,9 @@ import { CommonModule } from '../common/common.module';
         },
       }),
     }),
-    AuthModule,
-    MemberModule,
-    CommonModule,
   ],
-  controllers: [ProductController],
-  providers: [ProductService],
+  controllers: [CommonController],
+  providers: [CommonService],
+  exports: [CommonService],
 })
-export class ProductModule {}
+export class CommonModule {}

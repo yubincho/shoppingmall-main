@@ -1,4 +1,4 @@
-import { CommonEntity } from '../../product/entities/common.entity';
+import { CommonEntity } from '../../common/common-entities/common.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Member } from '../../member/entities/member.entity';
 import { Product } from '../../product/entities/product.entity';

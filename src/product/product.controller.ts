@@ -38,19 +38,10 @@ export class ProductController {
 
   @Post('create')
   // @UseGuards(RoleGuard(RoleEnum.ADMIN))
-  @UseInterceptors(FileInterceptor('productImage'))
-  async productCreate(
-    @Body() createProductDto: CreateProductDto,
-    @UploadedFile() file?: Express.Multer.File,
-  ) {
-    // if (file) {
-    //   createProductDto.productImage = file.filename; // 업로드된 파일의 파일명을 productImage로 설정합니다.
-    // }
-    const newProduct = await this.productService.createProduct(
-      createProductDto,
-      file?.filename,
-    );
-    return newProduct;
+  async productCreate(@Body() createProductDto: CreateProductDto) {
+    await this.productService.createProductImage(createProductDto);
+
+    return await this.productService.createProduct(createProductDto);
   }
 
   @Put(':id')

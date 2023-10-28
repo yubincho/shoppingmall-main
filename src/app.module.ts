@@ -13,6 +13,7 @@ import { BrandModule } from './brand/brand.module';
 import { CommentModule } from './comment/comment.module';
 import { OrderModule } from './order/order.module';
 import { PortoneModule } from './portone/portone.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { PortoneModule } from './portone/portone.module';
     CommentModule,
     OrderModule,
     PortoneModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

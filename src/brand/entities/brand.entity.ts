@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-import { CommonEntity } from '../../product/entities/common.entity';
+import { CommonEntity } from '../../common/common-entities/common.entity';
 import { Product } from '../../product/entities/product.entity';
 
 @Entity()
