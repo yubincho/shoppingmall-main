@@ -6,9 +6,11 @@ import { TEMP_FOLDER_PATH } from '../common/const/path.const';
 import { v4 as uuid } from 'uuid';
 import { CommonController } from './common.controller';
 import { CommonService } from './common.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     MulterModule.register({
       limits: {
         fileSize: 10000000, // 10M까지
@@ -41,7 +43,7 @@ import { CommonService } from './common.service';
     }),
   ],
   controllers: [CommonController],
-  providers: [CommonService],
+  providers: [CommonService, ConfigService],
   exports: [CommonService],
 })
 export class CommonModule {}

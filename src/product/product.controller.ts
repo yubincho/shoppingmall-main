@@ -39,7 +39,7 @@ export class ProductController {
   @Post('create')
   // @UseGuards(RoleGuard(RoleEnum.ADMIN))
   async productCreate(@Body() createProductDto: CreateProductDto) {
-    await this.productService.createProductImage(createProductDto);
+    // await this.productService.createProductImage(createProductDto);
 
     return await this.productService.createProduct(createProductDto);
   }

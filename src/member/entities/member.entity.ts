@@ -51,22 +51,21 @@ export class Member extends CommonEntity {
   @BeforeUpdate()
   async beforeFunction(): Promise<void> {
     try {
-      // if (this.provider !== ProviderEnum.LOCAL) {
-      //   return;
-      // } else {
-      // profile image 자동 생성
-      this.profileImg = gravatar.url(this.email, {
-        s: '200',
-        r: 'pg',
-        d: 'mm',
-        protocol: 'https',
-      });
-      // password 암호화
-      const saltValue = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(this.password, saltValue);
-      this.password = hashedPassword;
-
-      // }
+      if (this.provider !== ProviderEnum.LOCAL) {
+        return;
+      } else {
+        // profile image 자동 생성
+        this.profileImg = gravatar.url(this.email, {
+          s: '200',
+          r: 'pg',
+          d: 'mm',
+          protocol: 'https',
+        });
+        // password 암호화
+        const saltValue = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(this.password, saltValue);
+        this.password = hashedPassword;
+      }
       // password 암호화
       // const saltValue = await bcrypt.genSalt(10);
       // const hashedPassword = await bcrypt.hash(this.password, saltValue);

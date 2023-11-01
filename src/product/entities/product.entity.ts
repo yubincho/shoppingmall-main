@@ -18,12 +18,6 @@ export class Product extends CommonEntity {
   @Column()
   public price: number;
 
-  @Column({ nullable: true })
-  @Transform(
-    ({ value }) => value && `/${join(PRODUCT_PUBLIC_IMAGE_PATH, value)}`,
-  )
-  public productImage?: string;
-
   @ManyToOne(() => Brand, (brand: Brand) => brand.name, {
     onDelete: 'NO ACTION',
   })

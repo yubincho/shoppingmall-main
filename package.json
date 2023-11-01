@@ -22,7 +22,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^10.0.0",
-    "@nestjs/config": "^3.0.0",
+    "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/mapped-types": "*",
@@ -40,6 +40,7 @@
     "@types/passport-kakao": "^1.0.0",
     "@types/passport-naver": "^1.0.1",
     "@types/uuid": "^9.0.6",
+    "aws-sdk": "^2.1483.0",
     "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",
     "cache-manager": "4.1",
