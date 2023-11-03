@@ -13,7 +13,8 @@
   - (일반 이메일과 패스워드) 가입 및 로그인 / Oauth(구글, 카카오톡, 네이버)를 통한 회원가입 
 * (일반 이메일과 패스워드)가입시 이메일 인증번호 발송 - 인증번호 저장은 Redis 이용 
 * 결제 시스템
-  - 유저(member) - 주문(order) - 상품(product) : 일대다/다대일 관계
+  - 유저(member) - 주문(order) - 상품(product)
+    : 일대다/다대일 관계, 주문(order): 중간테이블으로 설정, entity로 만듦.
   - 결제 & 취소시 데이터 무결성 위해 transaction 추가 , 결제 서비스는 포트원 사용(portone)
 * 카테고리 구현
   - 상위 카테고리(brand) > 하위(product) / 상위 카테고리(product) > 하위(comment)
