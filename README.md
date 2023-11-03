@@ -3,7 +3,7 @@
 
 
 ### 사용 기술
-* Nest.js, TypeScript, Rest-API / PostgreSQL, TypeORM, Redis / JWT, 결제(PortOne & Tramsaction 적용)
+* Nest.js, TypeScript, Rest-API / PostgreSQL, TypeORM, Redis / JWT, 결제(PortOne & Transaction 적용)
 * ( 구현 예정 기술 :  AWS, S3, EC2, Docker, Socket.io )
 
 #####
