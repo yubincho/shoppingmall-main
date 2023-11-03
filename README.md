@@ -15,7 +15,8 @@
 * 결제 시스템
   - 유저(member) - 주문(order) - 상품(product) : 일대다/다대일 관계
   - 결제 & 취소시 데이터 무결성 위해 transaction 추가 , 결제 서비스는 포트원 사용(portone)
-* 카테고리 구현 - 상위 카테고리(brand) > 하위(product)
+* 카테고리 구현
+  - 상위 카테고리(brand) > 하위(product) / 상위 카테고리(product) > 하위(comment)
 * DB - PostgreSQL
 * 상품의 댓글(리뷰) - comment (구현 예정)
 * 이미지 업로드 - S3 (구현 예정)
