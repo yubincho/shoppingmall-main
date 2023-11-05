@@ -1,5 +1,14 @@
 import { CommonEntity } from '../../common/common-entities/common.entity';
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+} from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 // import * as bcrypt from 'bcrypt';
@@ -8,6 +17,8 @@ import { ProviderEnum } from './provider.enum';
 import { RoleEnum } from './role.enum';
 import { Comment } from '../../comment/entities/comment.entity';
 import { Order } from '../../order/entities/order.entity';
+import { Chats } from '../../chats/entities/chats.entity';
+import { Messages } from '../../messages/entities/messages.entity';
 
 @Entity()
 export class Member extends CommonEntity {
@@ -46,6 +57,13 @@ export class Member extends CommonEntity {
 
   @OneToMany(() => Order, (order: Order) => order.user)
   public orders: Order[];
+
+  @ManyToMany(() => Chats, (chat) => chat.users)
+  @JoinTable()
+  chats: Chats[];
+
+  @OneToMany(() => Messages, (message) => message.author)
+  messages: Messages[];
 
   @BeforeInsert()
   @BeforeUpdate()

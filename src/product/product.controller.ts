@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -18,6 +19,7 @@ import { RoleEnum } from '../member/entities/role.enum';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
+import { PaginatePostDto } from './dto/paginate-post.dto';
 
 @Controller('product')
 @ApiTags('Product')
@@ -25,7 +27,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('all')
-  async productGetAll() {
+  async productGetAll(@Query() body: PaginatePostDto) {
     const products = await this.productService.getAllProducts();
     return { count: products.length, products };
     // return products

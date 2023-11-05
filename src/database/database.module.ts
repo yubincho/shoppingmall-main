@@ -17,7 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           database: cfg.get('POSTGRES_DB'),
           entities: [__dirname + '/../**/*.entities{.ts,.js}'],
           autoLoadEntities: true,
-          synchronize: true,
+          synchronize: false,
           logging: true,
         } as TypeOrmModuleOptions;
       },

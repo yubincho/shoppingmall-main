@@ -14,6 +14,8 @@ import { CommentModule } from './comment/comment.module';
 import { OrderModule } from './order/order.module';
 import { PortoneModule } from './portone/portone.module';
 import { CommonModule } from './common/common.module';
+import { ChatsModule } from './chats/chats.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -60,6 +62,8 @@ import { CommonModule } from './common/common.module';
     OrderModule,
     PortoneModule,
     CommonModule,
+    ChatsModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

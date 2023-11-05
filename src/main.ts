@@ -3,14 +3,19 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
+
 import * as path from 'path';
 import { CustomExceptionFilter } from './common/filter/http-exception.filter';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   await app.setGlobalPrefix('api');
 
   app.useGlobalFilters(new CustomExceptionFilter());
+  // IoAdapter를 사용하여 소켓 설정
+  app.useWebSocketAdapter(new IoAdapter(app));
+
   app.useStaticAssets(
     process.env.NODE_ENV === 'production'
       ? path.join(__dirname, '..', '..', 'uploads')
