@@ -22,7 +22,9 @@
 * DB - PostgreSQL
 * 상품의 댓글(리뷰) - comment (구현 예정)
 * 이미지 업로드 - S3 (구현 예정)
-* 채팅 - Socket.io 
+* 채팅 - Socket.io
+  - chats(채팅방) ㅡ message(채팅 메시지) => 일대다/다대일
+  - 유저 - chats => 다대다 / 중간테이블: member_chats_chats
   
 #
 
