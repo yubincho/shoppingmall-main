@@ -22,7 +22,7 @@ export class CommonService {
    * 단일 파일 업로드
    * */
   async uploadFileToS3(
-    folder: string,
+    folder: string, // S3 드라이브(파일이 저장될 곳)- 임의로 folder라고 정함
     file: Express.Multer.File,
   ): Promise<{
     key: string;
@@ -73,6 +73,49 @@ export class CommonService {
   }
 
   public getAwsS3FileUrl(objectKey: string) {
-    return `https://${this.S3_BUCKET_NAME}.s3.amazonaws.com/${objectKey}`;
+    const url = `https://${this.S3_BUCKET_NAME}.s3.amazonaws.com/${objectKey}`;
+
+    console.log(url);
+    return url;
+  }
+
+  /**
+   * Multi 파일 업로드
+   * */
+  async uploadMultipleFilesToS3(
+    folder: string,
+    files: Express.Multer.File[],
+  ): Promise<{
+    uploads: {
+      key: string;
+      s3Object: AWS.S3.PutObjectOutput;
+      contentType: string;
+    }[];
+  }> {
+    try {
+      const uploads = await Promise.all(
+        files.map(async (file) => {
+          const key = `${folder}/${Date.now()}_${path.basename(
+            file.originalname,
+          )}`.replace(/ /g, '');
+
+          const s3Object = await this.awsS3
+            .putObject({
+              Bucket: this.S3_BUCKET_NAME,
+              Key: key,
+              Body: file.buffer,
+              ACL: 'public-read',
+              ContentType: file.mimetype,
+            })
+            .promise();
+
+          return { key, s3Object, contentType: file.mimetype };
+        }),
+      );
+
+      return { uploads };
+    } catch (error) {
+      throw new BadRequestException(`File upload failed : ${error}`);
+    }
   }
 }
