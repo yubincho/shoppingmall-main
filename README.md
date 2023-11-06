@@ -3,8 +3,8 @@
 
 
 ### 사용 기술
-* Nest.js, TypeScript, Rest-API / PostgreSQL, TypeORM, Redis / JWT, 결제(PortOne 서비스 사용)
-* ( 구현 예정 기술 :  AWS, S3, EC2, Docker, Socket.io )
+* Nest.js, TypeScript, Rest-API / PostgreSQL, TypeORM, Redis / JWT, 결제(PortOne 서비스 사용) / Socket.io 
+* ( 구현 예정 기술 :  AWS, S3, EC2, Docker )
 
 #
 
@@ -22,7 +22,7 @@
 * DB - PostgreSQL
 * 상품의 댓글(리뷰) - comment (구현 예정)
 * 이미지 업로드 - S3 (구현 예정)
-* 채팅 - Socket.io (구현 예정)
+* 채팅 - Socket.io 
   
 #
 
