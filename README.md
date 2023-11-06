@@ -10,7 +10,7 @@
 #
 
 ### 사용 tools
-* Webstrom IDE, DataGrip 
+* Webstorm IDE, DataGrip 
 
 #
 
