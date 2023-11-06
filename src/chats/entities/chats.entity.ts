@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Member } from '../../member/entities/member.entity';
-import { Messages } from '../../messages/entities/messages.entity';
+import { Messages } from '../../message/entities/messages.entity';
 
 /** 채팅 방 */
 @Entity()

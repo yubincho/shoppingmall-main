@@ -6,15 +6,16 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 import * as path from 'path';
 import { CustomExceptionFilter } from './common/filter/http-exception.filter';
-import { IoAdapter } from '@nestjs/platform-socket.io';
+import { ValidationPipe } from '@nestjs/common';
+import { SocketCatchHttpExceptionFilter } from './common/filter/socket-catch-http.exception-filter';
+// import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   await app.setGlobalPrefix('api');
 
+  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new CustomExceptionFilter());
-  // IoAdapter를 사용하여 소켓 설정
-  app.useWebSocketAdapter(new IoAdapter(app));
 
   app.useStaticAssets(
     process.env.NODE_ENV === 'production'
@@ -45,7 +46,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document); // http://localhost:3000/api-docs
 
-  app.enableCors();
+  // cors 에러 방지
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
 
   await app.listen(3000);
 }

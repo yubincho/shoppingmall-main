@@ -18,7 +18,7 @@ import { RoleEnum } from './role.enum';
 import { Comment } from '../../comment/entities/comment.entity';
 import { Order } from '../../order/entities/order.entity';
 import { Chats } from '../../chats/entities/chats.entity';
-import { Messages } from '../../messages/entities/messages.entity';
+import { Messages } from '../../message/entities/messages.entity';
 
 @Entity()
 export class Member extends CommonEntity {

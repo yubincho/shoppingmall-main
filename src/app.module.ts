@@ -15,7 +15,7 @@ import { OrderModule } from './order/order.module';
 import { PortoneModule } from './portone/portone.module';
 import { CommonModule } from './common/common.module';
 import { ChatsModule } from './chats/chats.module';
-import { MessagesModule } from './messages/messages.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -63,7 +63,7 @@ import { MessagesModule } from './messages/messages.module';
     PortoneModule,
     CommonModule,
     ChatsModule,
-    MessagesModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

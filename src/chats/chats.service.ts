@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Chats } from './entities/chats.entity';
 import { CreateChatDto } from './dto/create-chat.dto';
+import { CreateMessageDto } from '../message/dto/create-message,dto';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class ChatsService {
@@ -31,5 +33,16 @@ export class ChatsService {
       where: { id: chatId },
     });
     return exists;
+  }
+
+  async findByIdOfChats(id: number) {
+    const chat = await this.chatsRepository.findOne({
+      where: { id },
+    }); // 예시: 채팅 정보를 가져오는 메서드
+    if (!chat) {
+      throw new WsException(`채팅방 아이디를 찾을 수 없습니다. Chat ID: ${id}`);
+    }
+
+    return chat;
   }
 }

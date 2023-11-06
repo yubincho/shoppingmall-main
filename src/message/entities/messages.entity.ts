@@ -8,7 +8,7 @@ export class Messages {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
+  @Column({ nullable: false })
   @IsString()
   message: string;
 
