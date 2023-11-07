@@ -10,7 +10,7 @@
 #
 
 ### 사용 tools
-* Webstorm IDE, DataGrip, Postman, GitKraken
+* Webstorm IDE, DataGrip, RedisInsight, Postman, GitKraken
 
 #
 
