@@ -3,10 +3,11 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  UseInterceptors,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, QueryRunner as QR, Repository } from 'typeorm';
 import { IPointTransactionCreate } from './interfaces/IPointTransactionCreate';
 import { POINT_TRANSACTION_STATUS_ENUM } from './entities/point-transaction-status.enum';
 import { Member } from '../member/entities/member.entity';
@@ -17,6 +18,8 @@ import { IPointCheckTransactionCancel } from './interfaces/IPointCheckTransactio
 import { IPointTransactionCheckAlreadyCanceled } from './interfaces/IPointTransactionCheckAlreadyCanceled';
 import { IPointTransactionCheckHasCancelablePoint } from './interfaces/IPointTransactionCheckHasCancelablePoint';
 import { OrderResponseDto } from './dto/order.response.dto';
+import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
+import { QueryRunner } from '../common/decorator/query-runner.decorator';
 
 @Injectable()
 export class OrderService {
@@ -96,6 +99,50 @@ export class OrderService {
     }
   }
 
+  @UseInterceptors(TransactionInterceptor)
+  async creates(
+    {
+      impUid,
+      amount,
+      user: _user,
+      status = POINT_TRANSACTION_STATUS_ENUM.PAYMENT,
+    }: IPointTransactionCreate,
+    @QueryRunner() queryRunner?: QR,
+  ): Promise<OrderResponseDto> {
+    // user를 _user로 변경하기
+
+    //  order 테이블에 거래기록 1줄 생성
+    const pointTransaction = {
+      impUid,
+      orderAmount: amount,
+      user: _user,
+      status,
+    };
+    const createTransaction = this.orderRepository.create(pointTransaction);
+    await queryRunner.manager.save(createTransaction);
+
+    // throw new Error('예기치 못한 실패!!'); // rollback 되는지 테스트
+
+    console.log('_user.id', _user.id);
+    // user 의 돈 찾아오기
+    const user = await queryRunner.manager.findOne(Member, {
+      where: { id: _user.id },
+    });
+
+    // user의 돈 업데이트 -> save 쓰면 쿼리 2번 나가서 비효율적
+
+    const updatedUser = await this.memberRepository.create({
+      ...user,
+      point: user.point + amount,
+    });
+    await queryRunner.manager.save(updatedUser);
+
+    await queryRunner.commitTransaction();
+
+    // 최종결과 브라우저에 돌려주기
+    return pointTransaction;
+  }
+
   /** 결제 생성, 결제하기 */
   async createForPayment({ impUid, amount, user }: IPointTransactionCreate) {
     // 결제완료 상태인지 검증하기
@@ -104,7 +151,8 @@ export class OrderService {
     await this.checkTransactionDuplication({ impUid });
 
     // (위 2가지 검증 마친 후 ) order 테이블에 거래기록 1줄 생성
-    return this.create({ impUid, amount, user });
+    // return this.create({ impUid, amount, user });
+    return this.creates({ impUid, amount, user });
   }
 
   /** 결제내역 조회  */

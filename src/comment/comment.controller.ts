@@ -1,14 +1,22 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RequestWithUserInterface } from '../auth/interfaces/requestWithUser.interface';
 
-@Controller('comment')
+@Controller('products/:productId/comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
-  @Post()
+  @Post('create')
   @UseGuards(JwtAuthGuard)
   async createComment(
     @Req() req: RequestWithUserInterface,
@@ -24,4 +32,12 @@ export class CommentController {
   async getAllComments() {
     return await this.commentService.getAllComments();
   }
+
+  @Get(':/commentId')
+  async getCommentById(@Param() commentId: string) {
+    return await this.commentService.getCommentById(commentId);
+  }
+
+  @Post('/:commentId')
+  async updateComment(@Param() commentId: string) {}
 }

@@ -5,7 +5,7 @@ import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import * as path from 'path';
-import { CustomExceptionFilter } from './common/filter/http-exception.filter';
+import { CustomExceptionFilter } from './common/filter/custom-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { SocketCatchHttpExceptionFilter } from './common/filter/socket-catch-http.exception-filter';
 // import { WsAdapter } from '@nestjs/platform-ws';

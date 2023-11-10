@@ -20,12 +20,14 @@ import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { PaginatePostDto } from './dto/paginate-post.dto';
+import { LogInterceptor } from '../common/interceptor/log.interceptor';
 
 @Controller('product')
 @ApiTags('Product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @UseInterceptors(LogInterceptor)
   @Get('all')
   async productGetAll(@Query() body: PaginatePostDto) {
     const products = await this.productService.getAllProducts();
