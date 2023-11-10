@@ -31,6 +31,8 @@
 * 채팅 - Socket.io
   - chats(채팅방) ㅡ message(채팅 메시지) => 일대다/다대일
   - 유저 - chats => 다대다 / 중간테이블: member_chats_chats
+* 기타
+  - (예외처리) filter, (transaction) interceptor, (log) middleware
   
 #
 
