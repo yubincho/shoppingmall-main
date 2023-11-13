@@ -42,6 +42,12 @@
 
 #
 
+### 프로젝트 설정 순서
+: https://www.notion.so/95c317dabf6e490d8db4d0d4f4caf0bd
+
+
+#
+
 ### API DOCS
 Postman Docs
 -> https://documenter.getpostman.com/view/11038161/2s9YXk2g79
