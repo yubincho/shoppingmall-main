@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -11,8 +12,9 @@ import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RequestWithUserInterface } from '../auth/interfaces/requestWithUser.interface';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
-@Controller('products/:productId/comments')
+@Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -33,11 +35,28 @@ export class CommentController {
     return await this.commentService.getAllComments();
   }
 
-  @Get(':/commentId')
-  async getCommentById(@Param() commentId: string) {
-    return await this.commentService.getCommentById(commentId);
+  @Get(':id')
+  async getCommentById(@Param('id') id: string) {
+    console.log('[Comment id]', id);
+    return await this.commentService.getCommentById(id);
   }
 
-  @Post('/:commentId')
-  async updateComment(@Param() commentId: string) {}
+  @Post('update/:commentId')
+  @UseGuards(JwtAuthGuard)
+  async updateComment(
+    @Param('commentId') commentId: string,
+    @Req() req: RequestWithUserInterface,
+    @Body() updateCommentDto: UpdateCommentDto,
+  ) {
+    return await this.commentService.modifyComment(updateCommentDto, commentId);
+  }
+
+  @Delete('delete/:commentId')
+  @UseGuards(JwtAuthGuard)
+  async deleteComment(
+    @Param('commentId') commentId: string,
+    @Req() req: RequestWithUserInterface,
+  ) {
+    return await this.commentService.deleteOne(commentId);
+  }
 }

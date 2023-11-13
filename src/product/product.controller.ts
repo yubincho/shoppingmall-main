@@ -12,8 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { RequestProductDto } from './dto/request-product.dto';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { RoleEnum } from '../member/entities/role.enum';
 import { ApiTags } from '@nestjs/swagger';
@@ -42,7 +41,7 @@ export class ProductController {
 
   @Post('create')
   // @UseGuards(RoleGuard(RoleEnum.ADMIN))
-  async productCreate(@Body() createProductDto: CreateProductDto) {
+  async productCreate(@Body() createProductDto: RequestProductDto) {
     // await this.productService.createProductImage(createProductDto);
 
     return await this.productService.createProduct(createProductDto);
@@ -52,7 +51,7 @@ export class ProductController {
   @UseGuards(RoleGuard(RoleEnum.ADMIN))
   async updateProduct(
     @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
+    @Body() updateProductDto: RequestProductDto,
   ) {
     return await this.productService.updateProduct(id, updateProductDto);
   }

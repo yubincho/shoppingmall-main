@@ -2,8 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { RequestProductDto } from './dto/request-product.dto';
 import { join, basename } from 'path';
 import {
   PRODUCTS_IMAGE_PATH,
@@ -33,7 +32,7 @@ export class ProductService {
   async getByIdOfProduct(id: string) {
     const product = await this.productRepository.findOne({
       where: { id },
-      relations: ['brand'],
+      relations: ['brand', 'comments'],
     });
     if (!product) {
       throw new HttpException('No product', HttpStatus.NOT_FOUND);
@@ -48,7 +47,7 @@ export class ProductService {
    * 2. temp 폴더에 이미지 있는지 null 체크
    * 3. temp 폴더 이미지를 products 폴더로 옮기기
    * */
-  // async createProductImage(dto: CreateProductDto) {
+  // async createProductImage(dto: RequestProductDto) {
   //   // dto의 이미지 이름을 기반으로 파일의 경로를 생성한다.
   //   const tempFilePath = join(TEMP_FOLDER_PATH, dto.productImage);
   //
@@ -77,7 +76,7 @@ export class ProductService {
   //   return true;
   // }
 
-  async createProduct(createProductDto: CreateProductDto) {
+  async createProduct(createProductDto: RequestProductDto) {
     // productImage가 배열로 들어오면 그대로 사용, 그렇지 않은 경우 콤마로 구분된 문자열을 배열로 변환
     // if (!Array.isArray(createProductDto.productImage)) {
     //   createProductDto.productImage = createProductDto.productImage.split(',');
@@ -89,7 +88,7 @@ export class ProductService {
     return newProduct;
   }
 
-  async updateProduct(id: string, updateProductDto: UpdateProductDto) {
+  async updateProduct(id: string, updateProductDto: RequestProductDto) {
     const product = this.getByIdOfProduct(id);
     if (product) {
       return await this.productRepository.update(id, {
