@@ -26,7 +26,7 @@
 * 카테고리 구현
   - 상위 카테고리(brand) > 하위(product) / 상위 카테고리(product) > 하위(comment)
 * DB - PostgreSQL
-* 상품의 댓글(리뷰) - comment (구현 예정)
+* 상품의 댓글(리뷰) - comments
 * 파일(이미지) 업로드 - S3 
 * 채팅 - Socket.io
   - chats(채팅방) ㅡ message(채팅 메시지) => 일대다/다대일
@@ -42,10 +42,29 @@
 
 #
 
+### 프로젝트 설정 순서
+: https://www.notion.so/95c317dabf6e490d8db4d0d4f4caf0bd
+
+
+#
+
 ### API DOCS
-Swagger Docs
+Postman Docs
+-> https://documenter.getpostman.com/view/11038161/2s9YXk2g79
+(코드 가독성을 위해 Swagger Docs를 사용하지 않음)
 
 # 
 
-블로그입니다. 
+
+### 결제 흐름 
+![image](https://github.com/yubincho/shoppingmall-main/assets/58660769/9cb6e524-5c1e-4257-a341-0e704c34d81b)
+
+
+포트원 등록 방법
+: https://www.notion.so/37a4e1afc9534ef394e6b1bf069ddf0e
+
+#
+
+
+### 블로그입니다. 
 https://www.notion.so/95c317dabf6e490d8db4d0d4f4caf0bd
