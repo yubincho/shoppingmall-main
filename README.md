@@ -64,6 +64,11 @@ Postman Docs
 
 #
 
+### 도커 & AWS EC2 배포 과정
+https://www.notion.so/study-054cb5ef6ffc4849b686ffd1d9da2792
+
+# 
+
 
 ### 블로그입니다. 
 https://www.notion.so/95c317dabf6e490d8db4d0d4f4caf0bd
