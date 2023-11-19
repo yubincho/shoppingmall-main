@@ -1,7 +1,10 @@
 FROM node:18
 
-COPY ./package.json /myfolder/
-WORKDIR /myfolder/
+RUN mkdir -p /var/app
+COPY ./package.json /var/app
+WORKDIR /var/app
+COPY . .
 RUN npm install
-COPY . /myfolder/
-CMD npm run start:dev
+RUN npm run build
+EXPOSE 3000
+CMD ["node", "dist/main.js"]
