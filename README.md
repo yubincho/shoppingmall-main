@@ -65,8 +65,9 @@ Postman Docs
 #
 
 ### 도커 & AWS EC2 배포 과정
-https://www.notion.so/study-054cb5ef6ffc4849b686ffd1d9da2792
-
+- https://www.notion.so/study-054cb5ef6ffc4849b686ffd1d9da2792
+- 배포한 주소 : http://13.124.85.231:3000/api
+  
 # 
 
 
