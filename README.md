@@ -45,12 +45,6 @@
 : https://www.notion.so/95c317dabf6e490d8db4d0d4f4caf0bd
 
 
-#
-
-### API DOCS
-Postman Docs
--> https://documenter.getpostman.com/view/11038161/2s9YXk2g79
-(코드 가독성을 위해 Swagger Docs를 사용하지 않음)
 
 # 
 
