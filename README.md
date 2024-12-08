@@ -24,7 +24,7 @@
   - 결제 & 취소시 데이터 정합성 위해 Transaction 추가 , 결제 서비스는 포트원 사용(PortOne)
 * 카테고리 구현
   - 상위 카테고리(brand) > 하위(product) / 상위 카테고리(product) > 하위(comment)
-* DB - PostgreSQL
+* DB - PostgreSQL, Redis
 * 상품의 댓글(리뷰) - comments
 * 파일(이미지) 업로드 - S3 
 * 채팅 - Socket.io
